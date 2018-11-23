@@ -5,7 +5,7 @@ import os
 
 path =  'data' + os.sep + 'scores.txt'
 print(path)
-pdData = pd.read_csv(path,header = None ,names = ['Exam 1','Exam 2','admin'])
+pdData = pd.read_csv(path,header = None ,names = ('Exam 1','Exam 2','admin'))
 pdData.head()
 # print(pdData)
 
