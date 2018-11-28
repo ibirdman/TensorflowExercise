@@ -1,6 +1,8 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-W = [0.3, 0.1, 0.2] # 线性参数列表 (W[0] is bias)
+W = [0, 1, 2] # 线性参数列表 (W[0] is bias)
 DIM = len(W) - 1       # 属性数量
 
 # sample point count for training.
@@ -45,4 +47,20 @@ def gradient_descent(X, y, alpha):
 optimal = gradient_descent(X, y, alpha)
 print('optimal:\n', optimal)
 print('error function:', error_function(optimal, X, y)[0,0])
+
+# 设置图表标题,并给坐标轴加上标签
+plt.title("Square Numbers", fontsize=24)
+plt.xlabel("Value", fontsize=14)
+plt.ylabel("Square of Value", fontsize=14)
+
+x_value = np.transpose(X)
+print(x_value[1])
+print(x_value[2])
+plt.scatter(x_value[1], x_value[2], c = 'b', edgecolor='none', s=30)
+plt.grid()
+
+plt.plot(x, y, color="purple", lw=1, ls='-', marker='o', markersize=8, markerfacecolor="red")
+
+plt.show()
+
 
