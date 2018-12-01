@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import load_iris
 
 class logistic(object):
     def __init__(self):
@@ -45,13 +44,13 @@ class logistic(object):
 
 def on_press(event):
     global samples_data
-    print("my position:" ,event.button,event.xdata, event.ydata)
+    # print("my position:" ,event.button,event.xdata, event.ydata)
     if event.button == 1: cla = 1
     elif event.button == 3: cla = 0
     samples_data.append([event.xdata,event.ydata,cla])  
     # print(samples_data)
     X, y, W = start_train(samples_data)
-    plt.clf()
+    plt.cla()
     redraw(X, y, W)
     
 def start_train(sample_data):
@@ -80,12 +79,12 @@ def redraw(X, y, W):
     #show the decision boundary
     x1 = np.arange(0,10,0.5)
     x2 = (- W[0] - W[1]*x1) / W[2]
-
     plt.plot(x1,x2,color = 'black')
+
+    plt.legend(loc = 'upper left')
     plt.xlabel('X1')
     plt.ylabel('X2')
-    plt.legend(loc = 'upper left')
-    plt.show()
+    plt.draw()
     
 samples_data = [[1, 1, 1], [2, 2, 1], [3, 3, 1], [1, 3, 0], [2, 3, 0], [3, 4, 0]]
 # print(samples)
@@ -95,4 +94,4 @@ fig.canvas.mpl_connect('button_press_event', on_press)
 X, y, W = start_train(samples_data)
 redraw(X, y, W)
 
-
+plt.show()
