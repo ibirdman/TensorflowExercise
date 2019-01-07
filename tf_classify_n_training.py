@@ -10,7 +10,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 FLAGS = tf.app.flags.FLAGS
 
 # 设置训练相关参数
-tf.app.flags.DEFINE_integer("iteration", 101, "Iterations to train [1e4]")
+tf.app.flags.DEFINE_integer("iteration", 20001, "Iterations to train [1e4]")
 tf.app.flags.DEFINE_integer("disp_freq", 200, "Display the current results every display_freq iterations [1e2]")
 tf.app.flags.DEFINE_integer("train_batch_size", 5, "The size of batch images [128]")
 tf.app.flags.DEFINE_float("learning_rate", 0.1, "Learning rate of for adam [0.01]")
@@ -24,7 +24,7 @@ def main(argv=None):
     # 1、数据输入设计：使用 placeholder 将数据送入网络，None 表示张量的第一个维度可以是任意长度的
     with tf.name_scope('Input'):
         X = tf.placeholder(dtype=tf.float32, shape=[None, 2], name='X_placeholder')
-        Y = tf.placeholder(dtype=tf.int32, shape=[None, 1], name='Y_placeholder')
+        Y = tf.placeholder(dtype=tf.int32, shape=[None, 3], name='Y_placeholder')
 
     # 2、前向网络设计
     with tf.name_scope('Inference'):
@@ -73,18 +73,25 @@ def main(argv=None):
         test_acc = sess.run(accuracy, feed_dict={X: sample_set.test.images, Y: sample_set.test.labels})
         print('test accuracy: {}'.format(test_acc))
         summary_writer.close()
+
         # redraw
         plt.clf()
-        draw_train_data(sample_set.train.images, sample_set.train.labels)
-        draw_predict_map(sess)
+        all_images = np.vstack((sample_set.train.images, sample_set.validation.images, sample_set.test.images))
+        all_labels = np.vstack((sample_set.train.labels, sample_set.validation.labels, sample_set.test.labels))
+        draw_train_data(all_images, all_labels)
+        plt.legend(loc='lower right')
+        x_pred_map = create_predict_map(all_images)
+        #print(x_pred_map)
+        y_pred_map = sess.run(Y_pred, feed_dict={X: x_pred_map})
+        #print(np.argmax(y_pred_map, 1))
+        draw_pred_map(x_pred_map, y_pred_map)
         plt.xlabel('X1')
         plt.ylabel('X2')
-        plt.legend(loc = 'upper left')
-        plt.title('samples points') 
+        plt.title('sample points') 
         plt.show()
         
 def init_figure():
-    fig = plt.figure()
+    fig = plt.figure(figsize=(20, 20))
     fig.canvas.mpl_connect('key_press_event', on_key_press)    
     
 def on_key_press(event): 
@@ -92,34 +99,37 @@ def on_key_press(event):
         redraw_all()
         
 def draw_train_data(X, Y):
+    Y = np.argmax(Y, 1);
     index_0 = np.where(Y==0)[0]
-    plt.scatter(X[index_0,0], X[index_0,1], marker='x', color = 'b', label = '0', s = 50)
+    plt.scatter(X[index_0,0], X[index_0,1], marker='x', color = 'b', label = '0', s = 30)
     index_1 =np.where(Y==1)[0]
-    plt.scatter(X[index_1,0], X[index_1,1], marker='o', color = 'r', label = '1', s = 15)
+    plt.scatter(X[index_1,0], X[index_1,1], marker='o', color = 'r', label = '1', s = 30)
     index_2 =np.where(Y==2)[0]
-    plt.scatter(X[index_2,0], X[index_2,1], marker='v', color = 'g', label = '2', s = 15)
+    plt.scatter(X[index_2,0], X[index_2,1], marker='v', color = 'g', label = '2', s = 30)
     
-def draw_predict_map(sess):
-    X1 = np.linspace(min(X[:,0]), max(X[:,0]), num=20)
-    X2 = np.linspace(min(X[:,1]), max(X[:,1]), num=20)
+def draw_pred_map(X, Y):
+    Y = np.argmax(Y, 1);
+    index_0 = np.where(Y==0)[0]
+    plt.scatter(X[index_0,0], X[index_0,1], marker='x', color = 'b', label = '0', s = 15, alpha = 0.1)
+    index_1 =np.where(Y==1)[0]
+    plt.scatter(X[index_1,0], X[index_1,1], marker='o', color = 'r', label = '1', s = 15, alpha = 0.1)
+    index_2 =np.where(Y==2)[0]
+    plt.scatter(X[index_2,0], X[index_2,1], marker='v', color = 'g', label = '2', s = 15, alpha = 0.1)
+    
+    
+def create_predict_map(X):
+    x1_num = 100
+    x2_num = 100
+    x_map = np.zeros(shape=(x1_num*x2_num, 2), dtype=np.float)
+    X1 = np.linspace(min(X[:,0]), max(X[:,0]), num=x1_num)
+    X2 = np.linspace(min(X[:,1]), max(X[:,1]), num=x2_num)
+    num = 0
     for x1 in X1:
         for x2 in X2:
-           test_sample = np.array([1, x1, x2], dtype=np.float)
-           y_predict = logistic_classify.predict(test_sample)
-           plt.scatter(x1, x2, c = np.where(y_predict == 0, 'blue', 'red'), alpha = 0.2, edgecolors='none', s=10)
-           
-def redraw(X, Y):
-    plt.clf()
-
-    draw_train_data(X, Y)
-    # draw_predict_map(X)
-
-    plt.xlabel('X1')
-    plt.ylabel('X2')
-    plt.legend(loc = 'upper left')
-    plt.title('samples points') 
-    plt.show()           
-
+           x_map[num, 0] = x1
+           x_map[num, 1] = x2
+           num += 1
+    return x_map
 
 # 执行main函数
 if __name__ == '__main__':

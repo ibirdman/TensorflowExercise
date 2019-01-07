@@ -58,11 +58,11 @@ def redraw_all():
 
 def draw_point(X, Y):
     index_0 = np.where(Y==0)[0]
-    plt.scatter(X[index_0,0], X[index_0,1], marker='x', color = 'b', label = '0', s = 50)
+    plt.scatter(X[index_0,0], X[index_0,1], marker='x', color = 'b', label = '0', s = 30)
     index_1 =np.where(Y==1)[0]
-    plt.scatter(X[index_1,0], X[index_1,1], marker='o', color = 'r', label = '1', s = 15)
+    plt.scatter(X[index_1,0], X[index_1,1], marker='o', color = 'r', label = '1', s = 30)
     index_2 =np.where(Y==2)[0]
-    plt.scatter(X[index_2,0], X[index_2,1], marker='v', color = 'g', label = '2', s = 15)
+    plt.scatter(X[index_2,0], X[index_2,1], marker='v', color = 'g', label = '2', s = 30)
     plt.draw()
 
 def save_samples(csv_file):

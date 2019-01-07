@@ -12,15 +12,20 @@ class Sample():
         self.start = 0
         
     def next_batch(self, batch_size):
-        images = self.images[self.start:self.start + batch_size, :]
-        labels = self.labels[self.start:self.start + batch_size, :]
+        end = (self.start + batch_size) % self.images.shape[0]
+        images = self.images[self.start:end, :]
+        labels = self.labels[self.start:end, :]
+        self.start = end
         return images, labels;   
 
 class SampleSet():
     def __init__(self):
         self.train = Sample() 
         self.validation = Sample()
-        self.test = Sample()                
+        self.test = Sample()
+        
+def make_one_hot(data):
+    return (np.arange(3)==data[:]).astype(np.integer)
         
 def load_samples(csv_file):
     samples_data = np.zeros(shape=(0, 3), dtype=np.float)
@@ -44,14 +49,18 @@ def load_samples(csv_file):
         test_data = samples_data[train_size + validation_size:train_size + validation_size + test_size,:]
 
         sample_set.train.images = train_data[:,0:2]
-        sample_set.train.labels = train_data[:,2:3]
+        print(train_data[:,2:3])
+        sample_set.train.labels = make_one_hot(train_data[:,2:3])
         
         sample_set.validation.images = validation_data[:,0:2]
-        sample_set.validation.labels = validation_data[:,2:3]
+        sample_set.validation.labels = make_one_hot(validation_data[:,2:3])
         
         sample_set.test.images = test_data[:,0:2]
-        sample_set.test.labels = test_data[:,2:3]
+        sample_set.test.labels = make_one_hot(test_data[:,2:3])
 
     return sample_set;
+
+#sample_set = load_samples('data/mysamples3.csv')
+#print(sample_set.train.labels)
 
 
