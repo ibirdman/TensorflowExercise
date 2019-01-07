@@ -50,7 +50,7 @@ def on_key_press(event):
     
 def start_train(classify):
     samples_data = load_samples('data/mysamples2.csv')
-    print(samples_data)
+    # print(samples_data)
 
     samples = np.array(samples_data)
     X = samples[:,0:2]
@@ -97,10 +97,8 @@ def draw_training_data(X, y, W):
     
 def draw_predict_map(X, y, W):
     global logistic_classify
-    x1_range = np.array([min(X[:,0]), max(X[:,0])], dtype=np.float)
-    x2_range = np.array([min(X[:,1]), max(X[:,1])], dtype=np.float)
-    X1 = np.arange(x1_range[0], x1_range[1], (x1_range[1] - x1_range[0]) / 20)
-    X2 = np.arange(x2_range[0], x2_range[1], (x2_range[1] - x2_range[0]) / 20)
+    X1 = np.linspace(min(X[:,0]), max(X[:,0]), num=20)
+    X2 = np.linspace(min(X[:,1]), max(X[:,1]), num=20)
     for x1 in X1:
         for x2 in X2:
            x_verify = np.array([1, x1, x2], dtype=np.float)
