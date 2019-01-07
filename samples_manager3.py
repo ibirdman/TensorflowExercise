@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
+sample_data_file = 'data/mysamples2.csv';
+
 def on_mouse_press(event):
     global samples_x, samples_y
     global classify_state
@@ -32,7 +34,7 @@ def on_key_press(event):
     elif event.key == 'ctrl+z':
         redraw_all()
     elif event.key == 'ctrl+a':
-        save_samples('mysamples2.csv')
+        save_samples(sample_data_file)
 
 def init_figure():
     fig = plt.figure()
@@ -89,7 +91,7 @@ def load_samples(csv_file):
 
 classify_state = -1
 
-samples_data = load_samples('mysamples2.csv')
+samples_data = load_samples(sample_data_file)
 init_figure()
 samples_x = samples_data[:,0:2]
 samples_y = samples_data[:,2:3]
