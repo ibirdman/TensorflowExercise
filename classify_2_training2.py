@@ -19,10 +19,10 @@ class logistic(object):
             loss.append(error)
  #           if i%200==0:
  #               print('i=%d,error=%f' %(i,error))
- 
+
         print('i=%d,error=%f' %(i,error))
         return loss
-    
+
     def compute_loss(self,X,y):
         num_train = X.shape[0]
         h = self.output(X)
@@ -30,18 +30,18 @@ class logistic(object):
         loss = loss / num_train
         dW = X.T.dot((h-y)) / num_train
         return loss,dW
-    
+
     def output(self,X):
         g = np.dot(X,self.W)
         return self.sigmod(g)
     def sigmod(self,X):
         return 1/(1+np.exp(-X))
-    
+
     def predict(self,X_test):
         h = self.output(X_test)
         y_pred = np.where(h>=0.5,1,0)
         return y_pred
-    
+
 def on_key_press(event):
     print(event.key)
     if event.key == 'ctrl+z':
@@ -71,7 +71,7 @@ def redraw(X, y, W):
 
     draw_training_data(X, y, W)
     draw_predict_map(X, y, W)
-    
+
     plt.xlabel('X1')
     plt.ylabel('X2')
     plt.legend(loc = 'upper left')
@@ -87,14 +87,14 @@ def load_samples(csv_file):
                 sample = np.array(row)
                 samples_data = np.append(samples_data, [sample.astype(np.float)], axis=0)            
     return samples_data;
-    
+
 def draw_training_data(X, y, W):
     label = np.array(y)
     index_0 = np.where(label==0)[0]
     plt.scatter(X[index_0,0],X[index_0,1],marker='x',color = 'b',label = '0',s = 15)
     index_1 =np.where(label==1)[0]
-    plt.scatter(X[index_1,0],X[index_1,1],marker='o',color = 'r',label = '1',s = 15)   
-    
+    plt.scatter(X[index_1,0],X[index_1,1],marker='o',color = 'r',label = '1',s = 15)
+
 def draw_predict_map(X, y, W):
     global logistic_classify
     X1 = np.linspace(min(X[:,0]), max(X[:,0]), num=20)
@@ -104,7 +104,7 @@ def draw_predict_map(X, y, W):
            x_verify = np.array([1, x1, x2], dtype=np.float)
            y_predict = logistic_classify.predict(x_verify)
            plt.scatter(x1, x2, c = np.where(y_predict == 0, 'blue', 'red'), alpha = 0.2, edgecolors='none', s=10)
-  
+
 # start
 logistic_classify = logistic()
 X, y, W = start_train(logistic_classify)
@@ -112,5 +112,4 @@ X, y, W = start_train(logistic_classify)
 fig = plt.figure()
 fig.canvas.mpl_connect('key_press_event', on_key_press)
 redraw(X, y, W)
-
 

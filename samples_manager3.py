@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
-sample_data_file = 'data/mysamples2.csv';
+sample_data_file = 'data/mysamples3.csv';
 
 def on_mouse_press(event):
     global samples_x, samples_y
@@ -55,7 +55,7 @@ def redraw_all():
     plt.xlim((-10, 10))
     plt.ylim((-10, 10))
     draw_point(samples_x, samples_y)
-    
+
 def draw_point(X, Y):
     index_0 = np.where(Y==0)[0]
     plt.scatter(X[index_0,0], X[index_0,1], marker='x', color = 'b', label = '0', s = 50)
@@ -64,7 +64,7 @@ def draw_point(X, Y):
     index_2 =np.where(Y==2)[0]
     plt.scatter(X[index_2,0], X[index_2,1], marker='v', color = 'g', label = '2', s = 15)
     plt.draw()
-    
+
 def save_samples(csv_file):
     global samples_x, samples_y
     samples_data = np.zeros(shape=(0, 3), dtype=np.float)
@@ -74,7 +74,7 @@ def save_samples(csv_file):
         writer.writerow(['x1', 'x2', 'y'])
         for row in samples_data:
             writer.writerow(row)
-            
+
 def load_samples(csv_file):
     samples_data = np.zeros(shape=(0, 3), dtype=np.float)
     if (os.path.exists(csv_file)):
@@ -86,7 +86,7 @@ def load_samples(csv_file):
                 samples_data = np.append(samples_data, [sample.astype(np.float)], axis=0)
     #else:
         # samples_data = np.array([[1, 1, 1], [2, 2, 1], [3, 3, 1], [1, 3, 0], [2, 3, 0]], dtype=np.float)
-            
+
     return samples_data;
 
 classify_state = -1
