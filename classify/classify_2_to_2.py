@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
+SAMPLE_DATA_FILE = '../data/mysamples2.csv';
+
 class logistic(object):
     def __init__(self):
         self.W = None
@@ -49,7 +51,7 @@ def on_key_press(event):
         redraw(X, y, W)
     
 def start_train(classify):
-    samples_data = load_samples('data/mysamples2.csv')
+    samples_data = load_samples(SAMPLE_DATA_FILE)
     # print(samples_data)
 
     samples = np.array(samples_data)
