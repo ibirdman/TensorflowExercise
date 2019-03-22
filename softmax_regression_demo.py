@@ -28,7 +28,7 @@ class logistic(object):
         for i in range(num_train):
             yl = y[i]
             hl = -self.output_sm(X[i], l)
-            if yl == l
+            if yl == l:
                 hl = hl + 1
                 
             dW = X[i]*hl

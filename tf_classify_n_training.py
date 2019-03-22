@@ -1,6 +1,6 @@
 import tensorflow as tf
 import os
-import sample_manager as sm
+from sample import sample_manager as sm
 import matplotlib.pyplot as plt
 import numpy as np
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
