@@ -29,16 +29,6 @@ def on_mouse_press(event):
         samples_x = np.append(samples_x, new_point_x, axis = 0)
         samples_y = np.append(samples_y, new_point_y, axis = 0)
         draw_point(new_point_x, new_point_y)
-    elif event.button == 3 and samples_x.size > 0:
-        x1 = round(event.xdata, 2)
-        x2 = round(event.ydata, 2)
-        target = np.array([[x1, x2]], dtype=np.float)
-        d = list(map(lambda x: np.sum(np.square(x - target)), samples_x))
-        if np.min(d) < 0.1:
-            idx = d.index(np.min(d))
-            samples_x = np.delete(samples_x, idx, 0)
-            samples_y = np.delete(samples_y, idx, 0)
-            redraw_all()
 
 def on_key_press(event):
     global classify_state
@@ -71,8 +61,6 @@ def redraw_all():
     plt.xlim((-10, 10))
     plt.ylim((-10, 10))
     draw_point(samples_x, samples_y)
-    plt.legend(loc='lower right')
-
 
 def draw_point(X, Y):
     for i in range(OUTPUT_CLASS_NUM):
@@ -114,5 +102,6 @@ init_figure()
 samples_x = samples_data[:,0:2]
 samples_y = samples_data[:,2:3]
 print(np.hstack((samples_x, samples_y)))
-redraw_all()
+draw_point(samples_x, samples_y)
+plt.legend(loc='lower right')
 plt.show()

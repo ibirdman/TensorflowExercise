@@ -17,14 +17,14 @@ OUTPUT_CLASS_STYLES = np.array([
     ['5', '^', '#808000'],
 ])
 
-SAMPLE_DATA_FILE = '../data/mysamples3.csv';
+SAMPLE_DATA_FILE = '../data/mysamples2_circle.csv';
 
 # 定义一个全局对象来获取参数的值，在程序中使用(eg：FLAGS.iteration)来引用参数
 FLAGS = tf.app.flags.FLAGS
 
 # 设置训练相关参数
-tf.app.flags.DEFINE_integer("iteration", 50001, "Iterations to train [1e4]")
-tf.app.flags.DEFINE_integer("input_num", 2, "the num of input class")
+tf.app.flags.DEFINE_integer("iteration", 30001, "Iterations to train [1e4]")
+tf.app.flags.DEFINE_integer("input_num", 2, "the num of input")
 tf.app.flags.DEFINE_integer("hide1_num", 5, "the node num of layer1")
 tf.app.flags.DEFINE_integer("hide2_num", 8, "the node num of layer2")
 tf.app.flags.DEFINE_integer("output_num", 0, "the num of output class") # got dynamically
@@ -33,6 +33,7 @@ tf.app.flags.DEFINE_integer("disp_freq", 500, "Display the current results every
 tf.app.flags.DEFINE_float("learning_rate", 0.1, "Learning rate of for adam [0.01]")
 tf.app.flags.DEFINE_string("log_dir", "logs", "Directory of logs.")
 tf.app.flags.DEFINE_float("lambd", 0.008, "regularization weight")
+tf.app.flags.DEFINE_float("keep_prob", 1.0, "dropout keep prob")
 
 
 def main(argv=None):
@@ -52,14 +53,19 @@ def main(argv=None):
     with tf.name_scope('Hide1'):
         W = tf.Variable(initial_value=tf.truncated_normal(shape=[FLAGS.input_num, FLAGS.hide1_num], stddev=0.01), name='Weights')
         b = tf.Variable(initial_value=tf.zeros(shape=[FLAGS.hide1_num]), name='bias')
-        hide1 = tf.nn.relu((tf.matmul(X, W) + b))
+        output = tf.matmul(X, W) + b
+        output = tf.nn.dropout(output, keep_prob=FLAGS.keep_prob)
+        hide1 = tf.nn.relu(output)
         tf.add_to_collection('losses', tf.contrib.layers.l2_regularizer(FLAGS.lambd)(W))
+
 
     # 2 隐藏层2
     with tf.name_scope('Hide2'):
         W = tf.Variable(initial_value=tf.truncated_normal(shape=[FLAGS.hide1_num, FLAGS.hide2_num], stddev=0.01), name='Weights')
         b = tf.Variable(initial_value=tf.zeros(shape=[FLAGS.hide2_num]), name='bias')
-        hide2 = tf.nn.relu((tf.matmul(hide1, W) + b))
+        output = tf.matmul(hide1, W) + b
+        output = tf.nn.dropout(output, keep_prob=FLAGS.keep_prob)
+        hide2 = tf.nn.relu(output)
         tf.add_to_collection('losses', tf.contrib.layers.l2_regularizer(FLAGS.lambd)(W))
 
     # 3 输出层
@@ -67,6 +73,7 @@ def main(argv=None):
         W = tf.Variable(initial_value=tf.truncated_normal(shape=[FLAGS.hide2_num, FLAGS.output_num], stddev=0.01), name='Weights')
         b = tf.Variable(initial_value=tf.zeros(shape=[FLAGS.output_num]), name='bias')
         output = tf.matmul(hide2, W) + b
+        output = tf.nn.dropout(output, keep_prob=FLAGS.keep_prob)
         Y_pred = tf.nn.softmax(logits=output)
         tf.add_to_collection('losses', tf.contrib.layers.l2_regularizer(FLAGS.lambd)(W))
 
@@ -76,7 +83,7 @@ def main(argv=None):
     tf.add_to_collection('losses', loss)
     total_loss = tf.add_n(tf.get_collection('losses'))
 
-    optimizer = tf.train.GradientDescentOptimizer(FLAGS.learning_rate).minimize(total_loss)
+    optimizer = tf.train.GradientDescentOptimizer(FLAGS.learning_rate).minimize(loss)
     # optimizer = tf.train.AdamOptimizer(FLAGS.learning_rate).minimize(total_loss)
 
     correct_prediction = tf.equal(tf.argmax(Y_pred, 1), tf.argmax(Y, 1))
