@@ -23,16 +23,16 @@ SAMPLE_DATA_FILE = '../data/mysamples2_circle.csv';
 FLAGS = tf.app.flags.FLAGS
 
 # 设置训练相关参数
-tf.app.flags.DEFINE_integer("iteration", 30001, "Iterations to train [1e4]")
+tf.app.flags.DEFINE_integer("iteration", 20001, "Iterations to train [1e4]")
 tf.app.flags.DEFINE_integer("input_num", 2, "the num of input")
-tf.app.flags.DEFINE_integer("hide1_num", 5, "the node num of layer1")
+tf.app.flags.DEFINE_integer("hide1_num", 8, "the node num of layer1")
 tf.app.flags.DEFINE_integer("hide2_num", 8, "the node num of layer2")
 tf.app.flags.DEFINE_integer("output_num", 0, "the num of output class") # got dynamically
 tf.app.flags.DEFINE_integer("train_batch_size", 5, "The size of batch images [128]")
 tf.app.flags.DEFINE_integer("disp_freq", 500, "Display the current results every display_freq iterations [1e2]")
 tf.app.flags.DEFINE_float("learning_rate", 0.1, "Learning rate of for adam [0.01]")
 tf.app.flags.DEFINE_string("log_dir", "logs", "Directory of logs.")
-tf.app.flags.DEFINE_float("lambd", 0.008, "regularization weight")
+tf.app.flags.DEFINE_float("lambd", 0.005, "regularization weight")
 tf.app.flags.DEFINE_float("keep_prob", 1.0, "dropout keep prob")
 
 
@@ -83,7 +83,7 @@ def main(argv=None):
     tf.add_to_collection('losses', loss)
     total_loss = tf.add_n(tf.get_collection('losses'))
 
-    optimizer = tf.train.GradientDescentOptimizer(FLAGS.learning_rate).minimize(loss)
+    optimizer = tf.train.GradientDescentOptimizer(FLAGS.learning_rate).minimize(total_loss)
     # optimizer = tf.train.AdamOptimizer(FLAGS.learning_rate).minimize(total_loss)
 
     correct_prediction = tf.equal(tf.argmax(Y_pred, 1), tf.argmax(Y, 1))

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
-SAMPLE_DATA_FILE = '../data/mysamples2_circle.csv';
+SAMPLE_DATA_FILE = '../data/mysamples3_circle.csv'
 #OUTPUT_CLASS_NUM = 3
 OUTPUT_CLASS_STYLES = np.array([
 ['0', 'o', 'r'], 
@@ -18,7 +18,7 @@ OUTPUT_CLASS_NUM = OUTPUT_CLASS_STYLES.shape[0]
 def on_mouse_press(event):
     global samples_x, samples_y
     global classify_state
-    if event.button == 1 and classify_state != -1:
+    if event.button == 1 and classify_state != -1: # add point
         print(event)
         x1 = round(event.xdata, 2)
         x2 = round(event.ydata, 2)
@@ -29,7 +29,7 @@ def on_mouse_press(event):
         samples_x = np.append(samples_x, new_point_x, axis = 0)
         samples_y = np.append(samples_y, new_point_y, axis = 0)
         draw_point(new_point_x, new_point_y)
-    elif event.button == 3 and samples_x.size > 0:
+    elif event.button == 3 and samples_x.size > 0: # delete point
         x1 = round(event.xdata, 2)
         x2 = round(event.ydata, 2)
         target = np.array([[x1, x2]], dtype=np.float)
