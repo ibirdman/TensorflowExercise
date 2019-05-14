@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
-SAMPLE_DATA_FILE = '../data/mysamples3_circle.csv'
+SAMPLE_DATA_FILE = '../data/mysamples2_overfit_test.csv'
 #OUTPUT_CLASS_NUM = 3
 OUTPUT_CLASS_STYLES = np.array([
 ['0', 'o', 'r'], 
@@ -51,6 +51,7 @@ def on_key_press(event):
         redraw_all()
     elif event.key == 'ctrl+a':
         save_samples(SAMPLE_DATA_FILE)
+        print('save file complete')
 
 def init_figure():
     fig = plt.figure(figsize=(8, 6))

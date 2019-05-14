@@ -17,7 +17,7 @@ OUTPUT_CLASS_STYLES = np.array([
     ['5', '^', '#808000'],
 ])
 
-SAMPLE_DATA_FILE = '../data/mysamples2_circle.csv';
+SAMPLE_DATA_FILE = '../data/mysamples2_overfit_test.csv';
 
 # 定义一个全局对象来获取参数的值，在程序中使用(eg：FLAGS.iteration)来引用参数
 FLAGS = tf.app.flags.FLAGS
