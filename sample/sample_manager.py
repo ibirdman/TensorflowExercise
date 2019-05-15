@@ -28,11 +28,11 @@ def make_one_hot(data, label_num):
     return (np.arange(label_num) == data[:]).astype(np.int)
         
 def load_samples(csv_file, one_hot=True):
-    samples_data = np.zeros(shape=(0, 3), dtype=np.float)
     if (os.path.exists(csv_file)):
         with open(csv_file) as f:
-            reader = csv.reader(f) #
-            next(reader) #skip the header line
+            reader = csv.reader(f)
+            header = next(reader) #skip the header line
+            samples_data = np.zeros(shape=(0, len(header)), dtype=np.float)
             for row in reader:
                 sample = np.array(row).astype(np.float)
                 samples_data = np.append(samples_data, [sample], axis=0)
