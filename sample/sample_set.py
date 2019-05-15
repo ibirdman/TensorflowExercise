@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import csv
+from sklearn.model_selection import train_test_split
 
 class Sample():
     def __init__(self, feature_num):
@@ -66,7 +67,16 @@ def load_samples(csv_file, one_hot=False):
 
     return sample_set;
 
-#sample_set = load_samples('../data/melon.csv')
+'''
+sample_set = load_samples('../data/melon.csv')
 #print(sample_set.all.features, sample_set.all.labels)
+
+x_train,x_test,y_train,y_test = train_test_split(sample_set.all.features,
+                                                 sample_set.all.labels,
+                                                 test_size = 0.0,
+                                                 random_state = 33)  # 为了复现实验，设置一个随机数
+
+print(x_train, '\n', y_train)
+'''
 
 
