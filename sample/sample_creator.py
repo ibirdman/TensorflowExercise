@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import csv
 
-SAMPLE_DATA_FILE = '../data/mysamples2_overfit_test.csv'
+SAMPLE_DATA_FILE = '../data/mysamples2_delta3.csv'
 #OUTPUT_CLASS_NUM = 3
 OUTPUT_CLASS_STYLES = np.array([
 ['0', 'o', 'r'], 

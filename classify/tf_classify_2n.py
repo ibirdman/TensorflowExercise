@@ -17,13 +17,13 @@ OUTPUT_CLASS_STYLES = np.array([
     ['5', '^', '#808000'],
 ])
 
-SAMPLE_DATA_FILE = '../data/mysamples2_overfit_test.csv';
+SAMPLE_DATA_FILE = '../data/mysamples2_delta3.csv';
 
 # 定义一个全局对象来获取参数的值，在程序中使用(eg：FLAGS.iteration)来引用参数
 FLAGS = tf.app.flags.FLAGS
 
 # 设置训练相关参数
-tf.app.flags.DEFINE_integer("iteration", 20001, "Iterations to train [1e4]")
+tf.app.flags.DEFINE_integer("iteration", 10001, "Iterations to train [1e4]")
 tf.app.flags.DEFINE_integer("input_num", 2, "the num of input")
 tf.app.flags.DEFINE_integer("hide1_num", 8, "the node num of layer1")
 tf.app.flags.DEFINE_integer("hide2_num", 8, "the node num of layer2")
