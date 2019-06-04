@@ -1,22 +1,26 @@
+#coding:utf-8
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import sys
+
 #设置字体样式
-mpl.rcParams['font.family']='sans-serif'
-mpl.rcParams['font.sans-serif']=[u'SimHei']
+# mpl.rcParams['font.family']='sans-serif'
+# mpl.rcParams['font.sans-serif']=[u'SimHei']
 title = 'Hello'
 fig = plt.figure(title, figsize=(8, 7))
 fig.tight_layout()
 ax = fig.add_subplot(111)
-data = [3,4,5,7,3]
-labels = ['a','b','c','d','e']
-explodes =[0 for x in data]
-explodes[0] =0.015
+data = [1, 1, 1]
+#labels = ['1/3','20吨','?']
+labels=[u'陆地',u'海洋',u'海洋']
+explodes =[0.015 for x in data]
+# explodes[0] =0.015
 ax.pie(data, labels= labels, radius=0.8, #data 是数据，labels 是标签，radius 是饼图半径
        explode=explodes, #explodes 为0 代表不偏离圆心， 不为零则代表偏离圆心的距离
-       autopct='%1.1f%%', #显示所占比例，百分数
+       # autopct='%1.1f%%', #显示所占比例，百分数
        pctdistance = 0.5,
-       labeldistance=0.7,  # a,b,c,d 到圆心的距离
+       labeldistance=0.6,  # a,b,c,d 到圆心的距离
        textprops={'fontsize': 20, 'color': 'black'}) # 标签和比例的格式
 plt.axis('equal') # 正圆
 plt.legend( loc = 'upper right',bbox_to_anchor=(1.1, 1.05), fontsize=14, borderaxespad=0.3)
@@ -76,3 +80,4 @@ center=(0, 0), frame=False, rotatelabels=False, hold=None, data=None)'''
 # autotexts：列表。A是数字标签的Text实例列表。
 #           仅当参数autopct不为None时才返回。
 # '''
+print("我要python支持中文")
