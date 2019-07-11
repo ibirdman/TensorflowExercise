@@ -11,7 +11,7 @@ print(b)
 c = list(filter(lambda x:True if x % 3 == 0 else False, range(100)))
 print(c)
 
-l = [x for x in [1,2,3,4,5,6] if x%3==0]
+l = [x for x in range(15) if x%3==0]
 print(l)
 
 c = list(filter(lambda x:True if x % 3 == 0 else False, range(100)))
