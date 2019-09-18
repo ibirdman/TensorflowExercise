@@ -1,0 +1,4 @@
+embeddings {
+  tensor_name: "embeddings/Variable:0"
+  metadata_path: "/home/CORPUSERS/28848747/tensorflow/TensorflowExercise/word2vec/log/metadata.tsv"
+}

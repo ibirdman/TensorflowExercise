@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/CORPUSERS/28848747/tensorflow/TensorflowExercise/word2vec/log/model.ckpt"
+all_model_checkpoint_paths: "/home/CORPUSERS/28848747/tensorflow/TensorflowExercise/word2vec/log/model.ckpt"
